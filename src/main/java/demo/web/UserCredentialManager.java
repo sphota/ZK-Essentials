@@ -22,7 +22,7 @@ public class UserCredentialManager {
 	private UserCredentialManager() {
 	}
 
-	public static UserCredentialManager getIntance() {
+	public static UserCredentialManager getInstance() {
 		Session session = Executions.getCurrent().getSession();
 		synchronized (session) {
 			UserCredentialManager userModel = (UserCredentialManager) session

@@ -9,7 +9,7 @@ import demo.web.UserCredentialManager;
 public class UserUtils {
 	
 	public static Long getCurrentUserId() {
-		Long userId = UserCredentialManager.getIntance().getUser()
+		Long userId = UserCredentialManager.getInstance().getUser()
 				.getId();
 		return userId;
 	}

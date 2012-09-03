@@ -3,13 +3,19 @@ package demo.web.ui.ctrl;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Image;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Row;
+import org.zkoss.zul.RowRenderer;
 
 import demo.model.DAOs;
 import demo.model.bean.Product;
@@ -40,6 +46,28 @@ public class ProductViewCtrl extends SelectorComposer<Div> {
 
 		ListModelList<Product> prodModel = new ListModelList<Product>(prods);
 		prodGrid.setModel(prodModel);
+		
+		
+		prodGrid.setRowRenderer(new RowRenderer<Product>(){
+
+			public void render(Row arg0, Product arg1, int arg2)
+					throws Exception {
+				Image img = new Image(arg1.getImgPath());
+				img.setHeight("70px");
+				img.setWidth("70px");
+				img.setParent(arg0);
+				new Label(arg1.getName()).setParent(arg0);
+				new Label(String.valueOf(arg1.getPrice())).setParent(arg0);
+				new Label(String.valueOf(arg1.getQuantity())).setParent(arg0);
+				new Label(arg1.getCreateDate().toString()).setParent(arg0);
+				
+				//new ProductOrder(arg1.getQuantity(),arg1).setParent(arg0);
+				ProductOrder po = new ProductOrder(arg1.getQuantity(),arg1);
+				po.afterCompose();
+				po.setParent(arg0);
+			}
+		});
+		
 	}
 	
 	@Listen("onAddProductOrder=#PrdoDiv #prodGrid row productOrder")

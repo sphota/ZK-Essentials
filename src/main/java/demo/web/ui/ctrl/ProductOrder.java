@@ -2,6 +2,7 @@ package demo.web.ui.ctrl;
 
 import java.util.HashMap;
 
+import org.zkoss.bind.BindUtils;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.Event;
@@ -15,6 +16,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Spinner;
 
 import demo.model.bean.Product;
+import demo.web.OverQuantityException;
 
 public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 
@@ -22,6 +24,16 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 	 * 
 	 */
 	private static final long serialVersionUID = 237399685255201046L;
+	
+	public ProductOrder() {
+		super();
+	}
+	
+	public ProductOrder(int maximumQuantity, Product product) {
+		super();
+		this.maximumQuantity = maximumQuantity;
+		this.product = product;
+	}
 
 	@Wire
 	Spinner spnQuantity;
@@ -36,7 +48,9 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 					private static final long serialVersionUID = 7141348964577773718L;
 
 					{
+			
 						put("maximumQuantity", getMaximumQuantity());
+						
 					}
 				});
 
@@ -44,6 +58,7 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 		Selectors.wireVariables(this, this, null);
 		Selectors.wireComponents(this, this, false);
 		Selectors.wireEventListeners(this, this);
+		
 	}
 
 	private int maximumQuantity;
@@ -54,6 +69,17 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 		Events.postEvent(this, new AddProductOrderEvent());
 	}
 
+//	@Listen("onClick=#btnAdd")
+//	public void addProduct() {
+//		ProductOrder po = ProductOrder.this;
+//		try {
+//			UserUtils.getShoppingCart().add(po.getProduct(), po.getQuantity());
+//		} catch (OverQuantityException e){
+//			po.setError(e.getMessage());
+//		}
+//		BindUtils.postGlobalCommand(null, null, "updateShoppingCart", null);
+//	}
+	
 	public int getMaximumQuantity() {
 		return maximumQuantity;
 	}

@@ -29,13 +29,14 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
 		super.doAfterCompose(comp);
-		if (UserCredentialManager.getIntance().isAuthenticated()) {
+		if (UserCredentialManager.getInstance().isAuthenticated()) {
 			Executions.getCurrent().sendRedirect("index.zul");
 		}
 		nameTxb.setFocus(true);
 
 	}
 	
+	/*
 	@Listen("onOK=#passwordTxb")
 	public void onOK() {
 		doLogin();
@@ -45,9 +46,21 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 	public void confirm() {
 		doLogin();
 	}
-
+	
 	private void doLogin() {
 		UserCredentialManager mgmt = UserCredentialManager.getIntance();
+		mgmt.login(nameTxb.getValue(), passwordTxb.getValue());
+		if (mgmt.isAuthenticated()) {
+			Executions.getCurrent().sendRedirect("index.zul");
+		} else {
+			mesgLbl.setValue("Your User Name or Password is invalid!");
+		}
+	}
+	*/
+	
+	@Listen("onOK=#passwordTxb ; onClick=#confirmBtn")
+	public void doLogin() {
+		UserCredentialManager mgmt = UserCredentialManager.getInstance();
 		mgmt.login(nameTxb.getValue(), passwordTxb.getValue());
 		if (mgmt.isAuthenticated()) {
 			Executions.getCurrent().sendRedirect("index.zul");

@@ -22,7 +22,7 @@ public class WorkbenchInit implements Initiator {
 	 */
 	public void doInit(Page page, @SuppressWarnings("rawtypes") Map arg) throws Exception {
 
-		if (!UserCredentialManager.getIntance().isAuthenticated()) {
+		if (!UserCredentialManager.getInstance().isAuthenticated()) {
 			Executions.getCurrent().sendRedirect("login.zul");
 		}
 	}
@@ -38,3 +38,4 @@ public class WorkbenchInit implements Initiator {
 	}
 
 }
+
