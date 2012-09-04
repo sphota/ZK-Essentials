@@ -25,20 +25,20 @@ public class ProductDAO {
 	private static final long DAY = 24 * HOUR;
 
 	private static final long time = System.currentTimeMillis();
-	public static final Product PROD1 = new Product(1, "Cookies", new Date(time
-			- 3 * DAY + 5 * HOUR + 30 * MIN), 4F, 30, true, "/image/cookie.jpg");
-	public static final Product PROD2 = new Product(2, "Toast", new Date(time
-			- 5 * DAY + 3 * HOUR), 3F, 43, true, "/image/toast.jpg");
-	public static final Product PROD3 = new Product(3, "Chocolate", new Date(
-			time - 10 * DAY + 5 * HOUR + +33 * MIN), 5.1F, 12, true,
-			"/image/chocolate.jpg");
-	public static final Product PROD4 = new Product(4, "Butter", new Date(time
-			- 7 * DAY + 8 * HOUR), 2.5F, 60, true, "/image/butter.jpg");
-	public static final Product PROD5 = new Product(5, "Milk", new Date(time
-			- 4 * DAY + 3 * HOUR), 3.1F, 71, true, "/image/milk.jpg");
-	public static final Product PROD6 = new Product(6, "Coffee Powder",
-			new Date(time - 4 * DAY + 3 * HOUR), 10.4F, 59, true,
-			"/image/coffee.jpg");
+	public static final Product PROD1 = new Product(1, "ZK Framework", new Date(time
+			- 3 * DAY + 5 * HOUR + 30 * MIN), 999F, 30, true, "/image/zk_banner_image.png");
+	public static final Product PROD2 = new Product(2, "ZK Spring", new Date(time
+			- 5 * DAY + 3 * HOUR), 98.9F, 43, true, "/image/zkspring_banner_image.png");
+	public static final Product PROD3 = new Product(3, "ZK Spreadsheet", new Date(
+			time - 10 * DAY + 5 * HOUR + +33 * MIN), 389.98F, 12, true,
+			"/image/zss_banner_image.png");
+	public static final Product PROD4 = new Product(4, "ZK Pivottable", new Date(time
+			- 7 * DAY + 8 * HOUR), 389.98F, 60, true, "/image/zkpvt-banner_image.png");
+	public static final Product PROD5 = new Product(5, "ZK JSP", new Date(time
+			- 4 * DAY + 3 * HOUR), 99.89F, 71, true, "/image/zkjsp-banner_image.png");
+	public static final Product PROD6 = new Product(6, "ZATS",
+			new Date(time - 4 * DAY + 3 * HOUR), 399.89F, 59, true,
+			"/image/zats_banner_image.png");
 
 	static {
 		dbModel.put(PROD1.getId(), PROD1);

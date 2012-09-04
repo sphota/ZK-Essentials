@@ -16,6 +16,7 @@ public class ShoppingCartViewModel {
 	private String orderNote;
 	private CartItem selectedItem;
 	
+	
 	public String getOrderNote() {
 		return orderNote;
 	}
@@ -45,6 +46,7 @@ public class ShoppingCartViewModel {
 	public void submitOrder() {
 		DAOs.getOrderDAO().createOrder(UserUtils.getCurrentUserId(), getCartItems(), getOrderNote());
 		clearOrders();
+		
 	}
 	
 	@Command
@@ -64,4 +66,6 @@ public class ShoppingCartViewModel {
 	public void updateShoppingCart() {
 		//no post processing to be done
 	}
+	
+	
 }

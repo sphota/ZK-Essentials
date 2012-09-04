@@ -19,7 +19,7 @@ public class UserDAO {
 	private static final Map<Long, User> dbModel = Collections
 			.synchronizedMap(new HashMap<Long, User>());
 
-	public static final User USER1 = new User(1L, "ian", "ian", "user");
+	public static final User USER1 = new User(1L, "l", "l", "user");
 	public static final User USER2 = new User(2L, "zk", "zk", "admin");
 	public static final User USER3 = new User(3L, "tom", "tom", "user");
 

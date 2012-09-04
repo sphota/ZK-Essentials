@@ -16,6 +16,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
+import org.zkoss.zk.ui.metainfo.Parser;
 
 import demo.model.DAOs;
 import demo.model.bean.Product;
@@ -60,17 +61,18 @@ public class ProductViewCtrl extends SelectorComposer<Div> {
 				new Label(String.valueOf(arg1.getPrice())).setParent(arg0);
 				new Label(String.valueOf(arg1.getQuantity())).setParent(arg0);
 				new Label(arg1.getCreateDate().toString()).setParent(arg0);
-				
-				//new ProductOrder(arg1.getQuantity(),arg1).setParent(arg0);
 				ProductOrder po = new ProductOrder(arg1.getQuantity(),arg1);
 				po.afterCompose();
 				po.setParent(arg0);
 			}
 		});
 		
+	
+		
+		
 	}
 	
-	@Listen("onAddProductOrder=#PrdoDiv #prodGrid row productOrder")
+	@Listen("onAddProductOrder=#PrdoDiv #prodGrid row productOrder") //use cell(since productOrder extends cell) instead of productOrder if component name (productOrder) was not specified in component directive  
 	public void addProduct(Event fe) {
 
 		if (!(fe.getTarget() instanceof ProductOrder)) {
