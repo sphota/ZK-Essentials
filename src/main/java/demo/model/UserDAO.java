@@ -19,14 +19,12 @@ public class UserDAO {
 	private static final Map<Long, User> dbModel = Collections
 			.synchronizedMap(new HashMap<Long, User>());
 
-	public static final User USER1 = new User(1L, "l", "l", "user");
+	public static final User USER1 = new User(1L, "z", "z", "user");
 	public static final User USER2 = new User(2L, "zk", "zk", "admin");
-	public static final User USER3 = new User(3L, "tom", "tom", "user");
 
 	static {
 		dbModel.put(USER1.getId(), USER1);
 		dbModel.put(USER2.getId(), USER2);
-		dbModel.put(USER3.getId(), USER3);
 	}
 
 	public List<User> findAll() {

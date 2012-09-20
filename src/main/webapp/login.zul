@@ -1,9 +1,15 @@
-<?page title="ZK Store - Login"?>
+<?page title="ZK API Store - Login"?>
+<zk>
+<style>
+	.z-window-overlapped-header {
+		font-size: 15px;
+	}
+</style>
 <window id="loginWin" border="normal" width="300px"
-	title="You are using: ${desktop.webApp.version}"
+	title="ZK API Store Login"
 	apply="demo.web.ui.ctrl.LoginViewCtrl" mode="overlapped"
 	position="center,center">
-
+	<label id="mesgLbl" style="color:red"/>
 	<grid>
 		<rows>
 			<row>
@@ -14,9 +20,15 @@
 				Password:
 				<textbox id="passwordTxb" type="password" />
 			</row>
+			<row>
+			<cell colspan="2" align="right">
+				<button id="confirmBtn" label="Confirm" />
+			</cell>
+			</row>
 		</rows>
-
+		<foot>
+			<footer>Powered By : ZK ${desktop.webApp.version}</footer>
+		</foot>
 	</grid>
-	<button id="confirmBtn" label="confirm" />
-	<label id="mesgLbl" />
 </window>
+</zk>

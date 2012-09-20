@@ -59,7 +59,6 @@ public class ProductViewCtrl extends SelectorComposer<Div> {
 				img.setParent(arg0);
 				new Label(arg1.getName()).setParent(arg0);
 				new Label(String.valueOf(arg1.getPrice())).setParent(arg0);
-				new Label(String.valueOf(arg1.getQuantity())).setParent(arg0);
 				new Label(arg1.getCreateDate().toString()).setParent(arg0);
 				ProductOrder po = new ProductOrder(arg1.getQuantity(),arg1);
 				po.afterCompose();
@@ -72,7 +71,7 @@ public class ProductViewCtrl extends SelectorComposer<Div> {
 		
 	}
 	
-	@Listen("onAddProductOrder=#PrdoDiv #prodGrid row productOrder") //use cell(since productOrder extends cell) instead of productOrder if component name (productOrder) was not specified in component directive  
+	@Listen("onAddProductOrder=#PrdoDiv #prodGrid row productOrder") //if component name (productOrder) was not specified in component directive, use cell(since productOrder extends cell) instead of productOrder   
 	public void addProduct(Event fe) {
 
 		if (!(fe.getTarget() instanceof ProductOrder)) {
@@ -80,13 +79,15 @@ public class ProductViewCtrl extends SelectorComposer<Div> {
 		}
 
 		ProductOrder po = (ProductOrder) fe.getTarget();
-
+		
 		try {
+			int qty = po.getQuantity();
 			UserUtils.getShoppingCart()
-					.add(po.getProduct(), po.getQuantity());
+					.add(po.getProduct(), qty);
+			po.setQuantityInStock(po.getQuantityInStock()-qty);
 		} catch (OverQuantityException e) {
 			po.setError(e.getMessage());
-		}
+		} //Redundant when spinner constraints are set
 
 		BindUtils.postGlobalCommand(null, null, "updateShoppingCart", null);
 	}

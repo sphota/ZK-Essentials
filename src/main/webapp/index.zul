@@ -15,13 +15,84 @@
 </style>
 
 <window title="ZKOSS API STORE"
-	border="normal" width="100%" height="700px" >
+	border="normal" width="100%" height="100%">
 	<caption>
+		<toolbarbutton label="Logout">
+		<attribute name="onClick">
+			session.invalidate();
+			Executions.sendRedirect("login.zul");		
+		</attribute>
+		</toolbarbutton>
 		<image src="/image/ZK-Logo.gif" width="40px"/>
 	</caption>
 	<borderlayout>
-
-		<center border="0">
+		<north size="50%" vflex="true" border="0" splittable="true" autoscroll="true" collapsible="true" open="false">
+			<div id="orderArea" apply="org.zkoss.bind.BindComposer"
+				viewModel="@id('vm') @init('demo.web.ui.ctrl.OrderViewViewModel')">
+					<hlayout hflex="1">	
+					<listbox id="orderListbox" width="800px"
+							model="@bind(vm.orders)" selectedItem="@bind(vm.selectedItem)">
+							<auxhead>
+								<auxheader colspan="4" align="right">
+									<button label="Back to Shopping Cart" onClick="@command('closeOrderView')" />
+								</auxheader>
+							</auxhead>
+							<listhead>
+								<listheader label="Order ID" hflex="1"/>
+								<listheader label="Status" hflex="2"/>
+								<listheader label="Note" hflex="3"/>
+								<listheader label="Total" hflex="2"/>
+							</listhead>
+							<template name="model" var="order">
+								<listitem>
+									<listcell
+										label="@bind(order.id)" />
+									<listcell
+										label="@bind(order) @converter('demo.web.ui.OrderInfoTypeConverter')" />
+									<listcell
+										label="@bind(order.description)" />
+									<listcell
+										label="@bind(order.total)" />
+								</listitem>
+							</template>
+						</listbox>
+						<grid id="orderItemsGrid"
+						model="@load(vm.selectedItem.items)" hflex="2" visible="@load(not empty vm.selectedItem)">
+						<auxhead >
+							<auxheader colspan="4">Order ID <label value="@load(vm.selectedItem.id)"/></auxheader>
+						</auxhead>
+						<columns sizable="true">
+							<column label="Name" />
+							<column label="Quantity" />
+							<column label="Price" />
+							<column label="Sub Total" />
+						</columns>
+						<rows>
+							<template name="model" var="orderItem">
+								<row>
+									<label
+										value="@load(orderItem.name)" />
+									<label
+										value="@load(orderItem.quantity)" />
+									<label
+										value="@load(orderItem.price)" />
+									<label
+										value="@load(orderItem) @converter('demo.web.ui.OrderItemSubTotalTypeConverter')"
+										maxlength="8" />
+								</row>
+							</template>
+						</rows>
+						<foot>
+							<footer><button
+							label="Cancel Selected Order"
+							disabled="@load(empty vm.selectedItem)"
+							onClick="@command('cancelOrder')" /></footer>
+						</foot>
+					</grid>		
+				</hlayout>
+			</div>
+		</north>
+		<center border="0" autoscroll="true" >
 			<div id="PrdoDiv" apply="demo.web.ui.ctrl.ProductViewCtrl">
 				<grid id="prodGrid">
 					<auxhead>
@@ -31,7 +102,6 @@
 						<column  hflex="1" />
 						<column label="Product Name" hflex="1" />
 						<column label="Price" hflex="1"/>
-						<column label="Quantity" hflex="1" />
 						<column label="Date Available" hflex="2"/>
 						<column label="Action" hflex="2"/>
 					</columns>
@@ -52,13 +122,10 @@
 				</grid>
 			</div>
 		</center>
-
-		<east size="40%" flex="true"
-			splittable="true" collapsible="true">
+		<east size="40%" splittable="true" collapsible="true" autoscroll="true" >
 			<groupbox mold="3d" apply="org.zkoss.bind.BindComposer"
 				viewModel="@id('vm') @init('demo.web.ui.ctrl.ShoppingCartViewModel')">
 				<caption label="Shopping Cart"	/>			
-				<vlayout>
 				<groupbox mold="3d">
 				<caption label="Order Note : "></caption>
 					<textbox hflex="true" rows="4" value="@bind(vm.orderNote)"/>
@@ -82,9 +149,9 @@
 								label="@load(cartItem.product.name)" />
 							<listcell
 								label="@load(cartItem.product.price)" />
-							<listcell label="@load(cartItem.amount)"  />
+							<listcell label="@load(cartItem.amount)"/>
 							<listcell
-								label="@load(cartItem.product.price * cartItem.amount)"
+								label="@load(cartItem.product.price * cartItem.amount) @converter('formatedNumber',format='###,##0.00')"
 								style="word-wrap: word-break" />
 							<listcell>
 								<button
@@ -96,11 +163,11 @@
 					<listfoot>
 						<listfooter span="2" id="subtotalFooter">
 							<label value="SUM: "/>
-							<label value="@load(vm.shoppingCart.totalPrice)"/>
+							<label value="@load(vm.cartTotal)"/>
 						</listfooter>
 						<listfooter span="3" align="right">
 							<button id="submitOrderBtn" label="Checkout"
-								onClick="@command('submitOrder') @global-command('updateOrders')"
+								onClick="@command('submitOrder') @global-command('openOrderView')"
 								disabled="@load(empty vm.cartItems)" />
 							<button id="clearBtn" label="Clear"
 								onClick="@command('clearOrders')"
@@ -108,76 +175,8 @@
 						</listfooter>
 					</listfoot>
 				</listbox>
-				</vlayout>
 			</groupbox>
 		</east>
-
-		<south size="20%" flex="true" border="0" splittable="true"
-			collapsible="true" style="overflow:scroll">
-			<div id="orderArea" apply="org.zkoss.bind.BindComposer"
-				viewModel="@id('vm') @init('demo.web.ui.ctrl.OrderViewViewModel')">
-				<hlayout>
-					<vlayout hflex="1">
-						<listbox id="orderLibox"
-							model="@load(vm.orders)" selectedItem="@bind(vm.selectedItem)"
-							>
-							<listhead>
-								<listheader label="Info" />
-								<listheader label="Description" />
-								<listheader label="Sub-total" />
-							</listhead>
-							<template name="model" var="order">
-								<listitem>
-									<listcell
-										label="@load(order) @converter('demo.web.ui.OrderInfoTypeConverter')" />
-									<listcell
-										label="@load(order.description)" />
-									<listcell
-										label="@load(order.total)" />
-								</listitem>
-							</template>
-						</listbox>
-
-						<button id="cancelOrderBtn"
-							label="Cancel Selected Order"
-							disabled="@load(empty vm.selectedItem)"
-							onClick="@command('cancelOrder')" />
-						<button id="testBtn"
-							label="Change Size"
-							onClick="@command('expandView')" />
-					</vlayout>
-
-					<grid id="orderItemsGrid"
-						model="@load(vm.selectedItem.items)" hflex="1">
-						<columns sizable="true">
-							<column label="Name" />
-							<column label="Quantity" />
-							<column label="Price" />
-							<column label="Sub Total" />
-						</columns>
-						<rows>
-							<template name="model" var="orderItem">
-								<row>
-									<label
-										value="@load(orderItem.name)" />
-									<label
-										value="@load(orderItem.quantity)" />
-									<label
-										value="@load(orderItem.price)" />
-									<label
-										value="@load(orderItem) @converter('demo.web.ui.OrderItemSubTotalTypeConverter')"
-										maxlength="8" />
-								</row>
-							</template>
-						</rows>
-					</grid>
-				</hlayout>
-
-
-			</div>
-		</south>
-
 	</borderlayout>
-
 </window>
 </zk>

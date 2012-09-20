@@ -36,7 +36,18 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 
 	}
 	
-	/*
+	@Listen("onOK=#passwordTxb ; onClick=#confirmBtn")
+	public void doLogin() {
+		UserCredentialManager mgmt = UserCredentialManager.getInstance();
+		mgmt.login(nameTxb.getValue(), passwordTxb.getValue());
+		if (mgmt.isAuthenticated()) {
+			Executions.getCurrent().sendRedirect("index.zul");
+		} else {
+			mesgLbl.setValue("Your User Name or Password is invalid!");
+		}
+	}
+	
+	/* Equivalent to The Above Annotated Method
 	@Listen("onOK=#passwordTxb")
 	public void onOK() {
 		doLogin();
@@ -57,16 +68,5 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 		}
 	}
 	*/
-	
-	@Listen("onOK=#passwordTxb ; onClick=#confirmBtn")
-	public void doLogin() {
-		UserCredentialManager mgmt = UserCredentialManager.getInstance();
-		mgmt.login(nameTxb.getValue(), passwordTxb.getValue());
-		if (mgmt.isAuthenticated()) {
-			Executions.getCurrent().sendRedirect("index.zul");
-		} else {
-			mesgLbl.setValue("Your User Name or Password is invalid!");
-		}
-	}
 
 }

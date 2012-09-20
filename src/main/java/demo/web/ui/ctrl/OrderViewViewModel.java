@@ -1,5 +1,6 @@
 package demo.web.ui.ctrl;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.zkoss.bind.annotation.AfterCompose;
@@ -12,25 +13,30 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.South;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.North;
 
 import demo.model.DAOs;
 import demo.model.bean.Order;
 
 public class OrderViewViewModel  {
 	
-//	@Wire
-//	private Div orderArea;
+	private Order selectedItem;
+
+	@Wire
+	private Div orderArea;
+	
+	private North n;
+	
+	
 	
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view){
-		System.out.println("in aftercompose");
-		System.out.println(view.getDefinition().getName());
         Selectors.wireComponents(view, this, false);
+        n = (North)orderArea.getParent();
     }
 	
-	private Order selectedItem;
-
+	
 	public Order getSelectedItem() {
 		return selectedItem;
 	}
@@ -51,7 +57,6 @@ public class OrderViewViewModel  {
 		if (getSelectedItem() == null) {
 			return;
 		}
-		
 		DAOs.getOrderDAO().cancelOrder(getSelectedItem().getId());
 		setSelectedItem(null);
 	}
@@ -59,14 +64,16 @@ public class OrderViewViewModel  {
 	@GlobalCommand
 	@NotifyChange("orders")
 	public void updateOrders() {
-		//no post processing needed
+		//method exists for refreshing the UI only, ie. VM notifies Binder, Binder updates the View
+	}
+	
+	@GlobalCommand
+	public void openOrderView(){
+		n.setOpen(true);
 	}
 	
 	@Command
-	public void expandView(){
-		System.out.println("success");
-//		System.out.println(orderArea.getId());
-//		South s = (South)orderArea.getParent();
-//		s.setSize("100%");
+	public void closeOrderView(){
+		n.setOpen(false);
 	}
 }

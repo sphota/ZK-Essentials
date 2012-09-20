@@ -29,9 +29,9 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 		super();
 	}
 	
-	public ProductOrder(int maximumQuantity, Product product) {
+	public ProductOrder(int quantityInStock, Product product) {
 		super();
-		this.maximumQuantity = maximumQuantity;
+		this.quantityInStock = quantityInStock;
 		this.product = product;
 	}
 
@@ -42,15 +42,12 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 	Label lblError;
 
 	public void afterCompose() {
-		// 1. Render the template
+		// 1. Render the component template
 		Executions.createComponents("/WEB-INF/composite/productorder.zul",
 				this, new HashMap<String, Object>() {
 					private static final long serialVersionUID = 7141348964577773718L;
-
 					{
-			
-						put("maximumQuantity", getMaximumQuantity());
-						
+						put("quantityInStock", getQuantityInStock());	
 					}
 				});
 
@@ -61,7 +58,7 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 		
 	}
 
-	private int maximumQuantity;
+	private int quantityInStock;
 	private Product product;
 	
 	@Listen("onClick=#btnAdd")
@@ -80,12 +77,13 @@ public class ProductOrder extends Cell implements IdSpace, AfterCompose {
 //		BindUtils.postGlobalCommand(null, null, "updateShoppingCart", null);
 //	}
 	
-	public int getMaximumQuantity() {
-		return maximumQuantity;
+	public int getQuantityInStock() {
+		return quantityInStock;
 	}
 
-	public void setMaximumQuantity(int maximumQuantity) {
-		this.maximumQuantity = maximumQuantity;
+	public void setQuantityInStock(int quantityInStock) {
+		this.quantityInStock = quantityInStock;
+		spnQuantity.setConstraint("min 1 max "+this.quantityInStock);
 	}
 
 	public int getQuantity() {

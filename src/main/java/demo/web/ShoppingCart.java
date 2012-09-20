@@ -36,7 +36,7 @@ public class ShoppingCart {
 			throws OverQuantityException {
 		
 		CartItem item = this.getItem(prod.getId());
-		validate(item, prod, amount);
+//		validate(item, prod, amount);
 		if (item == null) {
 			this.add(item = new CartItem(prod));
 			item.add(amount);
@@ -46,16 +46,16 @@ public class ShoppingCart {
 		
 	}
 
-	private static void validate(CartItem item, Product prod, int amount)
-			throws OverQuantityException {
-		int oriAmount = item == null ? 0 : item.getAmount();
-		int total = oriAmount + amount;
-		if (total > prod.getQuantity()) {
-			String errMesg = "too much: " + oriAmount + " + " + amount + " > "
-					+ prod.getQuantity();
-			throw new OverQuantityException(errMesg);
-		}
-	}
+//	private static void validate(CartItem item, Product prod, int amount)
+//			throws OverQuantityException {
+//		int oriAmount = item == null ? 0 : item.getAmount();
+//		int total = oriAmount + amount;
+//		if (total > prod.getQuantity()) {
+//			System.out.println("in validate");
+//			String errMesg = "Only " + prod.getQuantity() + " units are in stock but "+ oriAmount + " + " + amount + " were requested ";
+//			throw new OverQuantityException(errMesg);
+//		}
+//	}
 
 	public void remove(long id) {
 		items.remove(id);
